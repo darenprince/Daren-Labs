@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { products, type ProductStatus, type ProductCategory, statusOrder } from "@/data/products";
 import ProductCard from "./ProductCard";
+import { motion, AnimatePresence } from "framer-motion";
 
 const statusOptions: ProductStatus[] = ["Stage 1 Beta", "Beta", "Prototype", "Concept", "Live"];
 const categoryOptions: ProductCategory[] = ["Intelligence", "Security", "Forensics", "Creative", "Relationship", "Cultural"];
@@ -83,66 +84,75 @@ export default function PortfolioSection() {
             </select>
           </div>
 
-          {showFilters && (
-            <div className="rounded-xl border border-border bg-card p-4 space-y-4">
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Status</p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setStatusFilter("All")}
-                    className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
-                      statusFilter === "All"
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    All
-                  </button>
-                  {statusOptions.map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => setStatusFilter(s)}
-                      className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
-                        statusFilter === s
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "border-border text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="rounded-xl border border-border bg-card p-4 space-y-4 mb-2">
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Status</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setStatusFilter("All")}
+                        className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
+                          statusFilter === "All"
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "border-border text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        All
+                      </button>
+                      {statusOptions.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => setStatusFilter(s)}
+                          className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
+                            statusFilter === s
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "border-border text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Category</p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setCategoryFilter("All")}
+                        className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
+                          categoryFilter === "All"
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "border-border text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        All
+                      </button>
+                      {categoryOptions.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => setCategoryFilter(c)}
+                          className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
+                            categoryFilter === c
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "border-border text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">Category</p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setCategoryFilter("All")}
-                    className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
-                      categoryFilter === "All"
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    All
-                  </button>
-                  {categoryOptions.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => setCategoryFilter(c)}
-                      className={`px-3 py-1 rounded-md text-xs font-medium border transition-colors ${
-                        categoryFilter === c
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "border-border text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {filtered.length === 0 ? (
@@ -156,11 +166,22 @@ export default function PortfolioSection() {
             </button>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <motion.div layout className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <AnimatePresence>
+              {filtered.map((product, i) => (
+                <motion.div
+                  layout
+                  key={product.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2, delay: i * 0.05 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
     </section>

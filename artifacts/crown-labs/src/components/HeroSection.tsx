@@ -1,5 +1,9 @@
 import { ArrowRight, Zap, Activity, Layers } from "lucide-react";
 import { products } from "@/data/products";
+import { BetaTestersModal } from "./modals/BetaTestersModal";
+import { DeveloperApplicationModal } from "./modals/DeveloperApplicationModal";
+import { AnimatedCounter } from "./animations/AnimatedCounter";
+import { motion } from "framer-motion";
 
 const flagship = products.find((p) => p.flagship)!;
 
@@ -7,6 +11,9 @@ export default function HeroSection() {
   const totalProducts = products.length;
   const activeBeta = products.filter((p) => p.status === "Beta" || p.status === "Stage 1 Beta").length;
   const concepts = products.filter((p) => p.status === "Concept").length;
+
+  const headlineText = "Applied Intelligence Studio for Real-World Product Outcomes";
+  const words = headlineText.split(" ");
 
   return (
     <section className="relative pt-28 pb-16 px-4 sm:px-6">
@@ -16,8 +23,17 @@ export default function HeroSection() {
             <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
               Crown Labs
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-foreground">
-              Applied Intelligence Studio for Real-World Product Outcomes
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-foreground flex flex-wrap gap-x-3 gap-y-2">
+              {words.map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  {word}
+                </motion.span>
+              ))}
             </h1>
             <p className="text-base text-muted-foreground font-medium">
               Shipping evidence-ready platforms, behavioral systems, and defensible IP.
@@ -38,18 +54,16 @@ export default function HeroSection() {
                 See the portfolio
                 <ArrowRight className="h-4 w-4" />
               </a>
-              <a
-                href="#beta"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-foreground hover:bg-card transition-colors"
-              >
-                Beta Testers
-              </a>
-              <a
-                href="#developer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-foreground hover:bg-card transition-colors"
-              >
-                Become A Crown Labs Developer
-              </a>
+              <BetaTestersModal trigger={
+                <button className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-foreground hover:bg-card transition-colors">
+                  Beta Testers
+                </button>
+              } />
+              <DeveloperApplicationModal trigger={
+                <button className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border text-sm text-foreground hover:bg-card transition-colors">
+                  Become A Crown Labs Developer
+                </button>
+              } />
             </div>
 
             <div className="grid grid-cols-3 gap-4 pt-4">
@@ -58,21 +72,27 @@ export default function HeroSection() {
                   <Layers className="h-4 w-4 text-muted-foreground" />
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Total products</p>
                 </div>
-                <p className="text-3xl font-bold text-foreground">{totalProducts}</p>
+                <p className="text-3xl font-bold text-foreground">
+                  <AnimatedCounter value={totalProducts} />
+                </p>
               </div>
               <div className="rounded-xl border border-border bg-card p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-4 w-4 text-muted-foreground" />
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Active beta builds</p>
                 </div>
-                <p className="text-3xl font-bold text-foreground">{activeBeta}</p>
+                <p className="text-3xl font-bold text-foreground">
+                  <AnimatedCounter value={activeBeta} />
+                </p>
               </div>
               <div className="rounded-xl border border-border bg-card p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Zap className="h-4 w-4 text-muted-foreground" />
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Concepts in pipeline</p>
                 </div>
-                <p className="text-3xl font-bold text-foreground">{concepts}</p>
+                <p className="text-3xl font-bold text-foreground">
+                  <AnimatedCounter value={concepts} />
+                </p>
               </div>
             </div>
           </div>

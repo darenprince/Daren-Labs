@@ -1,3 +1,5 @@
+import { ContactModal } from "./modals/ContactModal";
+
 export default function Footer() {
   return (
     <footer className="border-t border-border bg-card/50 py-10 px-4 sm:px-6">
@@ -12,9 +14,11 @@ export default function Footer() {
           <a href="#portfolio" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             Portfolio
           </a>
-          <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-            Contact
-          </a>
+          <ContactModal trigger={
+            <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              Contact
+            </button>
+          } />
           <a href="https://www.darenprince.com/book.html" target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             Buy book
           </a>

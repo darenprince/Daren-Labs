@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, TrendingUp } from "lucide-react";
 import { type Product, getStatusColor, getCategoryColor } from "@/data/products";
+import { motion, useInView } from "framer-motion";
+import { QuickViewModal } from "./modals/QuickViewModal";
+import { RequestAccessModal } from "./modals/RequestAccessModal";
 
 interface ProductCardProps {
   product: Product;
@@ -8,10 +11,21 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const progressRef = useRef(null);
+  const isInView = useInView(progressRef, { once: true });
+  
+  // Calculate readiness score
+  const readinessScore = product.status === "Stage 1 Beta" ? 85 : 
+                         product.status === "Beta" ? 65 : 
+                         product.status === "Prototype" ? 35 : 
+                         product.status === "Concept" ? 15 : 100;
 
   return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden hover:border-border/80 transition-colors">
-      <div className="p-5">
+    <motion.div 
+      whileHover={{ scale: 1.01, boxShadow: "0 0 15px -3px rgba(255, 59, 59, 0.15)" }}
+      className="rounded-xl border border-border bg-card overflow-hidden transition-colors hover:border-primary/50 flex flex-col h-full"
+    >
+      <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center">
@@ -32,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{product.description}</p>
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed flex-1">{product.description}</p>
 
         <div className="mt-4 rounded-lg border border-border bg-background/40 p-3">
           <div className="flex items-center justify-between mb-2">
@@ -70,12 +84,29 @@ export default function ProductCard({ product }: ProductCardProps) {
           ))}
         </div>
 
-        <p className="mt-3 text-[10px] text-muted-foreground">
-          Readiness score <span className="font-bold">0%</span>
-        </p>
+        <div className="mt-4" ref={progressRef}>
+          <div className="flex justify-between items-end mb-1.5">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
+              Readiness score
+            </p>
+            <span className="text-xs font-bold">{readinessScore}%</span>
+          </div>
+          <div className="h-1 bg-border rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-primary rounded-full"
+              initial={{ width: "0%" }}
+              animate={isInView ? { width: `${readinessScore}%` } : { width: "0%" }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            />
+          </div>
+        </div>
 
         {expanded && (
-          <div className="mt-4 space-y-4 border-t border-border pt-4">
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-4 space-y-4 border-t border-border pt-4"
+          >
             <div>
               <p className="text-xs font-semibold text-foreground mb-2">Core capabilities</p>
               <ul className="space-y-1.5">
@@ -91,10 +122,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Next gate</p>
               <p className="text-xs text-foreground">{product.nextGate}</p>
             </div>
-          </div>
+          </motion.div>
         )}
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 pt-4 border-t border-border flex items-center justify-between gap-3 flex-wrap">
           <button
             onClick={() => setExpanded(!expanded)}
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -102,25 +133,30 @@ export default function ProductCard({ product }: ProductCardProps) {
             {expanded ? (
               <>
                 <ChevronUp className="h-3.5 w-3.5" />
-                Collapse details
+                Collapse
               </>
             ) : (
               <>
                 <ChevronDown className="h-3.5 w-3.5" />
-                Expand details
+                Expand
               </>
             )}
           </button>
-          <span className="text-border">|</span>
-          <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-            Quick view
-          </button>
-          <span className="text-border">|</span>
-          <button className="text-xs text-primary hover:underline transition-colors">
-            Request access
-          </button>
+          <div className="flex items-center gap-3">
+            <QuickViewModal product={product} trigger={
+              <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                Quick view
+              </button>
+            } />
+            <span className="text-border">|</span>
+            <RequestAccessModal productName={product.name} trigger={
+              <button className="text-xs text-primary font-medium hover:underline transition-colors">
+                Request access
+              </button>
+            } />
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
