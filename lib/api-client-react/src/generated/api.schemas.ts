@@ -8,3 +8,108 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface AuthUser {
+  id: string;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
+  firstName: string | null;
+  /** @nullable */
+  lastName: string | null;
+  /** @nullable */
+  profileImageUrl: string | null;
+}
+
+export interface AuthUserEnvelope {
+  user: AuthUser | null;
+}
+
+export interface MobileTokenExchangeRequest {
+  /** @minLength 1 */
+  code: string;
+  /** @minLength 1 */
+  code_verifier: string;
+  /** @minLength 1 */
+  redirect_uri: string;
+  /** @minLength 1 */
+  state: string;
+  /** @minLength 1 */
+  nonce?: string;
+}
+
+export interface MobileTokenExchangeSuccess {
+  token: string;
+}
+
+export const LogoutSuccessValue = {
+  success: true,
+} as const;
+export type LogoutSuccess = typeof LogoutSuccessValue;
+
+export interface ErrorEnvelope {
+  error: string;
+}
+
+export interface FormSuccess {
+  success: boolean;
+}
+
+export interface BetaTesterSubmission {
+  /** @minLength 1 */
+  name: string;
+  email: string;
+  products?: string[];
+  expertise?: string;
+}
+
+export interface RequestAccessSubmission {
+  /** @minLength 1 */
+  name: string;
+  email: string;
+  productName: string;
+  org?: string;
+  usecase?: string;
+}
+
+export interface ContactSubmission {
+  /** @minLength 1 */
+  name: string;
+  email: string;
+  subject?: string;
+  /** @minLength 1 */
+  message: string;
+}
+
+export interface DeveloperApplicationSubmission {
+  /** @minLength 1 */
+  name: string;
+  email: string;
+  url: string;
+  expertise?: string;
+  /** @minLength 1 */
+  about: string;
+  available?: boolean;
+}
+
+export interface NotificationSubscription {
+  email: string;
+}
+
+/**
+ * Opaque session token — `Bearer <sid>`.
+ */
+export type AuthorizationSessionHeaderParameter = string;
+
+export type BeginBrowserLoginParams = {
+  /**
+   * Relative path to redirect to after login (must start with `/`). Defaults to `/`.
+   */
+  returnTo?: string;
+};
+
+export type HandleBrowserLoginCallbackParams = {
+  code?: string;
+  state?: string;
+  iss?: string;
+};

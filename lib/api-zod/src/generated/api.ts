@@ -14,3 +14,161 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary Get the currently authenticated user
+ */
+export const GetCurrentAuthUserHeader = zod.object({
+  Authorization: zod
+    .string()
+    .optional()
+    .describe("Opaque session token — `Bearer <sid>`."),
+});
+
+export const GetCurrentAuthUserResponse = zod.object({
+  user: zod.union([
+    zod.object({
+      id: zod.string(),
+      email: zod.string().email().nullable(),
+      firstName: zod.string().nullable(),
+      lastName: zod.string().nullable(),
+      profileImageUrl: zod.string().nullable(),
+    }),
+    zod.null(),
+  ]),
+});
+
+/**
+ * @summary Start the browser OIDC login flow
+ */
+export const BeginBrowserLoginQueryParams = zod.object({
+  returnTo: zod.coerce
+    .string()
+    .optional()
+    .describe(
+      "Relative path to redirect to after login (must start with `\/`). Defaults to `\/`.",
+    ),
+});
+
+/**
+ * @summary Complete the browser OIDC login flow
+ */
+export const HandleBrowserLoginCallbackQueryParams = zod.object({
+  code: zod.coerce.string().optional(),
+  state: zod.coerce.string().optional(),
+  iss: zod.coerce.string().url().optional(),
+});
+
+/**
+ * @summary Clear the session and begin OIDC logout
+ */
+export const LogoutBrowserSessionHeader = zod.object({
+  Authorization: zod
+    .string()
+    .optional()
+    .describe("Opaque session token — `Bearer <sid>`."),
+});
+
+/**
+ * @summary Exchange a mobile OIDC code for a session token
+ */
+
+export const ExchangeMobileAuthorizationCodeBody = zod.object({
+  code: zod.string().min(1),
+  code_verifier: zod.string().min(1),
+  redirect_uri: zod.string().url().min(1),
+  state: zod.string().min(1),
+  nonce: zod.string().min(1).optional(),
+});
+
+export const ExchangeMobileAuthorizationCodeResponse = zod.object({
+  token: zod.string(),
+});
+
+/**
+ * @summary Delete a mobile session token
+ */
+export const LogoutMobileSessionHeader = zod.object({
+  Authorization: zod
+    .string()
+    .optional()
+    .describe("Opaque session token — `Bearer <sid>`."),
+});
+
+export const LogoutMobileSessionResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Submit a beta tester application
+ */
+
+export const SubmitBetaTesterFormBody = zod.object({
+  name: zod.string().min(1),
+  email: zod.string().email(),
+  products: zod.array(zod.string()).optional(),
+  expertise: zod.string().optional(),
+});
+
+export const SubmitBetaTesterFormResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Submit a product access request
+ */
+
+export const SubmitRequestAccessFormBody = zod.object({
+  name: zod.string().min(1),
+  email: zod.string().email(),
+  productName: zod.string(),
+  org: zod.string().optional(),
+  usecase: zod.string().optional(),
+});
+
+export const SubmitRequestAccessFormResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Submit a contact/inquiry form
+ */
+
+export const SubmitContactFormBody = zod.object({
+  name: zod.string().min(1),
+  email: zod.string().email(),
+  subject: zod.string().optional(),
+  message: zod.string().min(1),
+});
+
+export const SubmitContactFormResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Submit a developer job application
+ */
+
+export const SubmitDeveloperApplicationFormBody = zod.object({
+  name: zod.string().min(1),
+  email: zod.string().email(),
+  url: zod.string().url(),
+  expertise: zod.string().optional(),
+  about: zod.string().min(1),
+  available: zod.boolean().optional(),
+});
+
+export const SubmitDeveloperApplicationFormResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Subscribe to product notifications
+ */
+export const SubmitNotificationSubscriptionBody = zod.object({
+  email: zod.string().email(),
+});
+
+export const SubmitNotificationSubscriptionResponse = zod.object({
+  success: zod.boolean(),
+});

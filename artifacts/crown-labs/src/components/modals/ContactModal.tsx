@@ -6,31 +6,50 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export function ContactModal({ trigger }: { trigger: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [subject, setSubject] = useState("general");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
+    const name = (formData.get("name") as string)?.trim();
+    const email = (formData.get("email") as string)?.trim();
+    const message = (formData.get("message") as string)?.trim();
 
     const newErrors: Record<string, string> = {};
     if (!name) newErrors.name = "Name is required";
     if (!email) newErrors.email = "Email is required";
     if (!message) newErrors.message = "Message is required";
+    if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/forms/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      toast.success("Message sent. We'll be in touch soon.");
+      setOpen(false);
+      setErrors({});
+      setSubject("general");
+      (e.target as HTMLFormElement).reset();
+    } catch {
+      toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Message sent successfully. We'll be in touch soon.");
-    setOpen(false);
-    setErrors({});
   };
 
   return (
@@ -46,18 +65,18 @@ export function ContactModal({ trigger }: { trigger: React.ReactNode }) {
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
-              <Input id="name" name="name" placeholder="John Doe" className="border-border bg-background" />
-              {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
+              <Label htmlFor="ct-name">Full Name *</Label>
+              <Input id="ct-name" name="name" placeholder="John Doe" className="border-border bg-background" />
+              {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email address *</Label>
-              <Input id="email" name="email" type="email" placeholder="john@example.com" className="border-border bg-background" />
-              {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
+              <Label htmlFor="ct-email">Email address *</Label>
+              <Input id="ct-email" name="email" type="email" placeholder="john@example.com" className="border-border bg-background" />
+              {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
             </div>
             <div className="space-y-2">
               <Label>Subject</Label>
-              <Select name="subject" defaultValue="general">
+              <Select value={subject} onValueChange={setSubject}>
                 <SelectTrigger className="border-border bg-background">
                   <SelectValue placeholder="Select subject" />
                 </SelectTrigger>
@@ -71,13 +90,13 @@ export function ContactModal({ trigger }: { trigger: React.ReactNode }) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="message">Message *</Label>
-              <Textarea id="message" name="message" placeholder="How can we help?" className="border-border bg-background min-h-[120px]" />
-              {errors.message && <p className="text-xs text-red-500">{errors.message}</p>}
+              <Label htmlFor="ct-message">Message *</Label>
+              <Textarea id="ct-message" name="message" placeholder="How can we help?" className="border-border bg-background min-h-[120px]" />
+              {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
             </div>
           </div>
-          <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-            Send message
+          <Button type="submit" disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+            {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Sending...</> : "Send message"}
           </Button>
         </form>
       </DialogContent>
