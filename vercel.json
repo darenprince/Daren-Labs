@@ -1,4 +1,9 @@
 {
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm run typecheck"
+  "installCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm run typecheck",
+  "functions": {
+    "api/index.ts": {
+      "maxDuration": 10
+    }
+  }
 }
