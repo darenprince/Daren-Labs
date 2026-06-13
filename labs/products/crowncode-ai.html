@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="CrownCode Intelligence Suite - Multimodal AI-powered forensics and intelligence analysis engine for evidence-ready operations." />
+  <meta property="og:title" content="CrownCode Intelligence Suite" />
+  <meta property="og:description" content="Multimodal AI-powered forensics and intelligence analysis engine for evidence-ready operations." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <title>CrownCode Intelligence Suite | Crown Labs</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --text-light: #9ca3af;
+      --primary: #0f172a;
+      --primary-light: #1e293b;
+      --accent: #dc2626;
+      --accent-light: #ef4444;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============ HEADER ============ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--primary);
+      transition: opacity 0.2s;
+    }
+
+    .logo:hover {
+      opacity: 0.8;
+    }
+
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      margin-left: 48px;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--card-bg);
+      border-color: var(--text-muted);
+    }
+
+    /* ============ HERO SECTION ============ */
+    .hero {
+      padding: 80px 0 60px;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--primary);
+    }
+
+    .hero-description {
+      font-size: 1.0625rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .hero-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .stat-detail {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ============ SECTION LAYOUT ============ */
+    section {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 48px;
+      max-width: 640px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .section-header p {
+      font-size: 1.0625rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ============ CAPABILITIES GRID ============ */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .capability-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: all 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .capability-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+
+    .capability-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05));
+      border: 1px solid rgba(220, 38, 38, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .capability-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .capability-card p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============ TWO-COLUMN LAYOUT ============ */
+    .split-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .split-section h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+
+    .split-section p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .feature-check {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1.5px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 0.75rem;
+    }
+
+    .feature-text {
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ============ METRICS/STATS GRID ============ */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .metric {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .metric-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============ CTA SECTION ============ */
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 64px;
+      text-align: center;
+      margin: 80px 0;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      color: white;
+    }
+
+    .cta-section p {
+      font-size: 1.0625rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--primary);
+    }
+
+    .btn-white:hover {
+      background: #f3f4f6;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-white {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-outline-white:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      background: var(--primary);
+      color: white;
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-section a {
+      display: block;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+
+    .footer-section a:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-content,
+      .split-section {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .cta-section {
+        padding: 48px 24px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav class="container">
+      <div class="nav-left">
+        <a href="/" class="logo">
+          <div class="logo-box">CC</div>
+          <span>CrownCode Intelligence</span>
+        </a>
+      </div>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#intelligence">Intelligence Modes</a>
+        <a href="#readiness">Readiness</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="btn btn-primary">Request Briefing</button>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="eyebrow">Intelligence Suite</div>
+          <h1>Multimodal Evidence-Ready Intelligence Analysis</h1>
+          <p class="hero-description">
+            Transform fragmented information into actionable, evidence-grade intelligence through AI-accelerated analysis, correlation, behavioral profiling, and operational decision support.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary">Explore Platform</button>
+            <button class="btn btn-secondary">View Capabilities</button>
+          </div>
+          <div style="margin-top: 20px;">
+            <div class="status-badge">
+              <div class="status-dot"></div>
+              Stage 1 Beta - Active Testing
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="stat-card">
+            <div class="stat-label">Current Status</div>
+            <div class="stat-value">Stage 1</div>
+            <div class="stat-detail">Beta Testing Phase</div>
+            <div class="status-badge" style="margin-top: 12px; width: 100%; justify-content: center;">
+              <div class="status-dot"></div>
+              Evidence-Ready
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Signal Coverage</div>
+            <div class="stat-value">5</div>
+            <div class="stat-detail">Analysis Modes - Text, Image, Audio, Video, Metadata</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Performance</div>
+            <div class="stat-value">&lt;30s</div>
+            <div class="stat-detail">Alert Latency for Threat Detection</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW SECTION -->
+  <section id="overview">
+    <div class="container">
+      <div class="section-header">
+        <h2>The Operating System For Intelligence</h2>
+        <p>A unified environment for evidence-grade analysis across text, image, audio, video, communications, and operational records.</p>
+      </div>
+
+      <div class="split-section">
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Built for Intelligence Professionals</h3>
+          <p>
+            Most organizations collect information. Few can transform information into understanding. CrownCode bridges that gap through a unified intelligence platform designed for:
+          </p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text"><strong>Intelligence Analysts</strong> - Correlate fragmented data into coherent intelligence</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text"><strong>Investigators</strong> - Accelerate workflows through evidence organization and relationship mapping</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text"><strong>Researchers</strong> - Extract meaningful patterns from multimodal data</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text"><strong>Operations Leaders</strong> - Make informed decisions with defensible intelligence</div>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Core Architecture</h3>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-check">■</div>
+              <div class="feature-text"><strong>Intelligence Fusion Engine</strong> - Correlate information across reports, communications, records, media, and systems</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">■</div>
+              <div class="feature-text"><strong>Multimodal Analysis</strong> - Extract intelligence from text, images, audio, video, and metadata simultaneously</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">■</div>
+              <div class="feature-text"><strong>Behavioral Intelligence</strong> - Predictive modeling and psychological threat assessment</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">■</div>
+              <div class="feature-text"><strong>Evidence-Grade Reporting</strong> - Audit trails, chain-of-custody, and defensible intelligence artifacts</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">■</div>
+              <div class="feature-text"><strong>Decision Support</strong> - Operational awareness and strategic forecasting</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES SECTION -->
+  <section id="capabilities">
+    <div class="container">
+      <div class="section-header">
+        <h2>Core Competencies</h2>
+        <p>Intelligence capabilities built for evidence-ready operations and defensible analysis.</p>
+      </div>
+
+      <div class="capabilities-grid">
+        <div class="capability-card">
+          <div class="capability-icon">🧠</div>
+          <h3>Intelligence Fusion</h3>
+          <p>Correlate information across reports, communications, records, media, and operational systems to create a unified, coherent intelligence picture.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">🔍</div>
+          <h3>Investigative Intelligence</h3>
+          <p>Accelerate investigative workflows through timeline reconstruction, evidence organization, relationship mapping, and pattern recognition.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">⚠️</div>
+          <h3>Risk Intelligence</h3>
+          <p>Identify emerging threats, vulnerabilities, escalation indicators, blind spots, and operational risks before they materialize.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">📡</div>
+          <h3>Operational Awareness</h3>
+          <p>Provide decision makers with timely, organized, and actionable intelligence for informed strategic and tactical decisions.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">📚</div>
+          <h3>Knowledge Intelligence</h3>
+          <p>Transform institutional knowledge into searchable, persistent, and discoverable intelligence assets accessible across the organization.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">🎯</div>
+          <h3>Behavioral Intelligence</h3>
+          <p>Psychological threat assessment, behavioral modeling, predictive profiling, and escalation forecasting for human-centered operations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTELLIGENCE MODES SECTION -->
+  <section id="intelligence">
+    <div class="container">
+      <div class="section-header">
+        <h2>Multimodal Signal Coverage</h2>
+        <p>Analyze evidence across five primary intelligence channels simultaneously.</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">📄</div>
+          <div class="metric-label">Text Analysis</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">NLP-powered extraction from documents, communications, records, and reports with semantic understanding.</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🖼️</div>
+          <div class="metric-label">Image Intelligence</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Computer vision analysis for object detection, facial recognition, scene understanding, and visual correlation.</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔊</div>
+          <div class="metric-label">Audio Analysis</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Speech recognition, speaker identification, tone analysis, and acoustic pattern matching.</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🎬</div>
+          <div class="metric-label">Video Intelligence</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Temporal analysis, motion detection, behavioral tracking, and multi-subject correlation across frames.</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔐</div>
+          <div class="metric-label">Metadata Analysis</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Temporal correlation, geolocation patterns, device signatures, and digital forensics integration.</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔗</div>
+          <div class="metric-label">Correlation Engine</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Cross-modal fusion linking insights across all five channels for unified intelligence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- READINESS SECTION -->
+  <section id="readiness">
+    <div class="container">
+      <div class="section-header">
+        <h2>Platform Readiness & Roadmap</h2>
+        <p>Current status, validation metrics, and next-phase milestones.</p>
+      </div>
+
+      <div class="split-section">
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Stage 1 Beta Status</h3>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Core intelligence fusion engine operational</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Multimodal analysis across five signal types</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Evidence-grade reporting with audit trails</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Behavioral intelligence framework integrated</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Investigative workflow acceleration tools</div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-check">✓</div>
+              <div class="feature-text">Chain-of-custody protocol implementation</div>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Next Phase Gates</h3>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-lg);">
+              <p style="font-size: 0.875rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 1</p>
+              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Complete controlled testing with validated evidence-ready reporting and defensible intelligence artifacts.</p>
+            </div>
+
+            <div style="padding: 20px; background: #f3f4f6; border: 1px solid var(--border); border-radius: var(--radius-lg);">
+              <p style="font-size: 0.875rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 2</p>
+              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Expand multimodal capabilities and introduce advanced behavioral modeling for predictive operations.</p>
+            </div>
+
+            <div style="padding: 20px; background: #f3f4f6; border: 1px solid var(--border); border-radius: var(--radius-lg);">
+              <p style="font-size: 0.875rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 3</p>
+              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Integrate ecosystem interoperability with Crown Labs products for coordinated intelligence operations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUATION SECTION -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <h2>Business Valuation & Growth Trajectory</h2>
+        <p>Asset valuation based on current capabilities and projected market expansion.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <div class="metric">
+          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Current Valuation</div>
+          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">$6M–$10M</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Stage 1 Beta with evidence-ready capabilities</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Projected Valuation</div>
+          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">$22M–$38M</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Post-Phase 1 completion with market validation</p>
+        </div>
+
+        <div class="metric">
+          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Growth Trajectory</div>
+          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">47%</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Average projected annual growth rate</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <h2>Transform Information Into Intelligence</h2>
+    <p>Support investigations, operations, research, and strategic decision-making through a modern intelligence platform designed for evidence-ready operations at scale.</p>
+    <div class="cta-buttons">
+      <button class="btn btn-white">Request Executive Briefing</button>
+      <button class="btn btn-outline-white">Explore Documentation</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Product</h4>
+          <a href="#overview">Overview</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#intelligence">Intelligence Modes</a>
+          <a href="#readiness">Roadmap</a>
+        </div>
+
+        <div class="footer-section">
+          <h4>Crown Labs</h4>
+          <a href="/">Labs Home</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#contact">Contact</a>
+          <a href="https://www.darenprince.com">About Daren Prince</a>
+        </div>
+
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <a href="#">Documentation</a>
+          <a href="#">API Reference</a>
+          <a href="#">Developer Guide</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <a href="#">GitHub</a>
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Crown Labs · Applied Intelligence Studio. All rights reserved.</p>
+        <div style="display: flex; gap: 24px;">
+          <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255, 255, 255, 0.9)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.6)'">Privacy</a>
+          <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255, 255, 255, 0.9)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.6)'">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Add scroll animation to elements
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section, .capability-card, .metric, .split-section').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
