@@ -13,25 +13,36 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg: #fafafa;
-      --card-bg: #ffffff;
-      --border: #e5e7eb;
-      --text: #1f2937;
-      --text-muted: #6b7280;
-      --text-light: #9ca3af;
+      --bg-primary: #0a0e27;
+      --bg-secondary: #0f1329;
+      --bg-tertiary: #151b3c;
+      --card-bg: #111827;
+      --card-bg-hover: #1a212e;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --text: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
       --primary: #0f172a;
       --primary-light: #1e293b;
-      --accent: #dc2626;
-      --accent-light: #ef4444;
+      --accent: #ff4444;
+      --accent-light: #ff6b5b;
+      --accent-glow: rgba(255, 68, 68, 0.15);
+      --accent-dark: #cc2222;
+      --success: #10b981;
+      --warning: #f59e0b;
       --radius: 12px;
       --radius-lg: 16px;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      --radius-xl: 24px;
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+      --shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 12px 32px 0 rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 24px rgba(255, 68, 68, 0.2);
     }
 
     * {
@@ -47,17 +58,44 @@
     }
 
     body {
-      background: var(--bg);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0a0e27 100%);
       color: var(--text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Background grid effect */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 68, 68, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 68, 68, 0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Gradient orbs */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 68, 68, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 68, 68, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 40% 80%, rgba(255, 68, 68, 0.04) 0%, transparent 35%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
     }
 
     /* ============ HEADER ============ */
@@ -65,13 +103,13 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(15, 19, 41, 0.8) 100%);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
 
     nav {
-      height: 64px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -80,41 +118,41 @@
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 24px;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 1.125rem;
-      color: var(--primary);
-      transition: opacity 0.2s;
+      color: var(--text);
+      transition: all 0.3s;
     }
 
     .logo:hover {
-      opacity: 0.8;
+      transform: translateY(-2px);
     }
 
     .logo-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: var(--shadow);
+      font-weight: 900;
+      font-size: 0.95rem;
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 40px;
       align-items: center;
       margin-left: 48px;
     }
@@ -124,11 +162,29 @@
       font-weight: 500;
       color: var(--text-muted);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: all 0.2s;
+      position: relative;
     }
 
     .nav-links a:hover {
       color: var(--text);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
     }
 
     .btn {
@@ -136,131 +192,212 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 11px 24px;
       border-radius: var(--radius);
       font-size: 0.875rem;
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
       cursor: pointer;
       border: none;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn:hover::before {
+      opacity: 1;
     }
 
     .btn-primary {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       color: white;
-      box-shadow: var(--shadow);
+      box-shadow: 0 0 20px var(--accent-glow);
     }
 
     .btn-primary:hover {
-      background: var(--primary-light);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 0 32px var(--accent-glow);
+      transform: translateY(-2px);
     }
 
     .btn-secondary {
       background: transparent;
       color: var(--text);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
     }
 
     .btn-secondary:hover {
       background: var(--card-bg);
-      border-color: var(--text-muted);
+      border-color: var(--border-hover);
     }
 
     /* ============ HERO SECTION ============ */
     .hero {
-      padding: 80px 0 60px;
+      padding: 100px 0 80px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 68, 68, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
     }
 
     .hero-content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
       align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-text {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
 
     .eyebrow {
       font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-weight: 800;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     h1 {
-      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 900;
       line-height: 1.1;
-      color: var(--primary);
+      color: var(--text);
+      background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero-description {
-      font-size: 1.0625rem;
+      font-size: 1.125rem;
       color: var(--text-muted);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
     .hero-visual {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      position: relative;
     }
 
     .stat-card {
-      background: var(--card-bg);
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg-hover) 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 68, 68, 0.05) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 32px rgba(255, 68, 68, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
     }
 
     .stat-label {
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-light);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .stat-value {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 900;
       color: var(--accent);
       margin-bottom: 8px;
     }
 
     .stat-detail {
-      font-size: 0.875rem;
+      font-size: 0.9375rem;
       color: var(--text-muted);
+      line-height: 1.6;
     }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 68, 68, 0.08));
+      border: 1px solid rgba(255, 68, 68, 0.3);
       border-radius: var(--radius);
       font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--accent);
+      font-weight: 700;
+      color: var(--accent-light);
+      backdrop-filter: blur(8px);
     }
 
     .status-dot {
@@ -269,100 +406,135 @@
       border-radius: 50%;
       background: var(--accent);
       animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      box-shadow: 0 0 12px var(--accent);
     }
 
     /* ============ SECTION LAYOUT ============ */
     section {
-      padding: 80px 0;
+      padding: 100px 0;
       border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    section:nth-child(even)::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 68, 68, 0.02) 0%, transparent 100%);
+      pointer-events: none;
     }
 
     .section-header {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 48px;
-      max-width: 640px;
+      gap: 16px;
+      margin-bottom: 64px;
+      max-width: 720px;
     }
 
     .section-header h2 {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 800;
-      color: var(--primary);
+      font-size: clamp(1.875rem, 5vw, 3rem);
+      font-weight: 900;
+      color: var(--text);
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .section-header p {
       font-size: 1.0625rem;
       color: var(--text-muted);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
     /* ============ CAPABILITIES GRID ============ */
     .capabilities-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 24px;
     }
 
     .capability-card {
-      background: var(--card-bg);
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg-hover) 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 36px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .capability-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 68, 68, 0.2) 0%, transparent 70%);
+      opacity: 0;
       transition: all 0.3s;
-      box-shadow: var(--shadow-sm);
     }
 
     .capability-card:hover {
       border-color: var(--accent);
-      box-shadow: var(--shadow);
-      transform: translateY(-4px);
+      box-shadow: 0 0 40px rgba(255, 68, 68, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .capability-card:hover::before {
+      opacity: 1;
+      top: -20%;
+      right: -20%;
     }
 
     .capability-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05));
-      border: 1px solid rgba(220, 38, 38, 0.2);
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255, 68, 68, 0.15), rgba(255, 68, 68, 0.05));
+      border: 1px solid rgba(255, 68, 68, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      margin-bottom: 16px;
+      font-size: 32px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .capability-card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.375rem;
+      font-weight: 800;
       margin-bottom: 12px;
-      color: var(--primary);
+      color: var(--text);
+      position: relative;
+      z-index: 1;
     }
 
     .capability-card p {
       font-size: 0.9375rem;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
     }
 
     /* ============ TWO-COLUMN LAYOUT ============ */
     .split-section {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+      gap: 80px;
+      align-items: start;
     }
 
-    .split-section h2 {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+    .split-section h3 {
+      font-size: 1.5625rem;
       font-weight: 800;
       margin-bottom: 24px;
-      color: var(--primary);
+      color: var(--text);
     }
 
     .split-section p {
@@ -376,109 +548,198 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      margin-top: 24px;
+      margin-top: 28px;
     }
 
     .feature-item {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg-hover) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all 0.3s;
+    }
+
+    .feature-item:hover {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--card-bg-hover) 0%, var(--bg-tertiary) 100%);
     }
 
     .feature-check {
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(220, 38, 38, 0.1);
-      border: 1.5px solid var(--accent);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--accent);
-      font-weight: bold;
+      color: white;
+      font-weight: 800;
       font-size: 0.75rem;
+      box-shadow: 0 0 16px rgba(255, 68, 68, 0.3);
     }
 
     .feature-text {
       font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .feature-text strong {
       color: var(--text);
-      line-height: 1.6;
+      font-weight: 700;
     }
 
     /* ============ METRICS/STATS GRID ============ */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin-top: 40px;
     }
 
     .metric {
-      background: var(--card-bg);
+      background: linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg-hover) 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 28px;
+      padding: 32px;
       text-align: center;
+      transition: all 0.3s;
+      box-shadow: var(--shadow);
     }
 
-    .metric-value {
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: var(--accent);
-      margin-bottom: 8px;
+    .metric:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 40px rgba(255, 68, 68, 0.2);
+      transform: translateY(-6px);
+    }
+
+    .metric-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.1));
     }
 
     .metric-label {
       font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-weight: 800;
+      color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .metric p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.7;
+    }
+
+    /* ============ READINESS BOXES ============ */
+    .readiness-box {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--border);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .readiness-box::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-light));
+    }
+
+    .readiness-box.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(255, 68, 68, 0.1), rgba(255, 68, 68, 0.05));
+    }
+
+    .readiness-box h4 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .readiness-box p {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
     /* ============ CTA SECTION ============ */
     .cta-section {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
       color: white;
-      border-radius: var(--radius-lg);
-      padding: 64px;
+      border-radius: var(--radius-xl);
+      padding: 80px;
       text-align: center;
-      margin: 80px 0;
+      margin: 100px 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(255, 68, 68, 0.3);
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+      opacity: 0.5;
     }
 
     .cta-section h2 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 900;
       margin-bottom: 16px;
       color: white;
+      position: relative;
+      z-index: 1;
     }
 
     .cta-section p {
-      font-size: 1.0625rem;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 32px;
-      max-width: 600px;
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 36px;
+      max-width: 720px;
       margin-left: auto;
       margin-right: auto;
-      line-height: 1.7;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
     }
 
     .cta-buttons {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     .btn-white {
       background: white;
-      color: var(--primary);
+      color: var(--accent);
+      font-weight: 800;
     }
 
     .btn-white:hover {
-      background: #f3f4f6;
-      transform: translateY(-1px);
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     .btn-outline-white {
@@ -488,14 +749,14 @@
     }
 
     .btn-outline-white:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     /* ============ FOOTER ============ */
     footer {
-      background: var(--primary);
-      color: white;
-      padding: 48px 0;
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-secondary);
+      padding: 60px 0 28px;
       border-top: 1px solid var(--border);
     }
 
@@ -503,62 +764,167 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 40px;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
     }
 
     .footer-section h4 {
       font-size: 0.875rem;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       margin-bottom: 16px;
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--text);
     }
 
     .footer-section a {
       display: block;
       font-size: 0.875rem;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-muted);
       text-decoration: none;
-      margin-bottom: 8px;
-      transition: color 0.2s;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .footer-section a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s;
     }
 
     .footer-section a:hover {
-      color: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+    }
+
+    .footer-section a:hover::before {
+      width: 100%;
     }
 
     .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.8125rem;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-light);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
     }
 
     /* ============ RESPONSIVE ============ */
     @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      nav {
+        height: 64px;
+      }
+
       .nav-links {
         display: none;
+      }
+
+      .hero {
+        padding: 60px 0 50px;
       }
 
       .hero-content,
       .split-section {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 40px;
+      }
+
+      .hero::after {
+        width: 400px;
+        height: 400px;
+        right: -50%;
       }
 
       .cta-section {
-        padding: 48px 24px;
+        padding: 60px 28px;
+        margin: 60px 0;
+      }
+
+      .cta-section h2 {
+        font-size: 1.875rem;
       }
 
       .footer-bottom {
         flex-direction: column;
-        gap: 16px;
         text-align: center;
       }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .section-header {
+        margin-bottom: 40px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .capabilities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============ SMOOTH ANIMATIONS ============ */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .slide-up {
+      animation: slideUp 0.6s ease-out;
     }
   </style>
 </head>
@@ -570,15 +936,16 @@
       <div class="nav-left">
         <a href="/" class="logo">
           <div class="logo-box">CC</div>
-          <span>CrownCode Intelligence</span>
+          <div>
+            <div style="font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-light); margin-top: 2px;">CrownCode</div>
+          </div>
         </a>
       </div>
       <div class="nav-links">
         <a href="#overview">Overview</a>
         <a href="#capabilities">Capabilities</a>
-        <a href="#intelligence">Intelligence Modes</a>
-        <a href="#readiness">Readiness</a>
-        <a href="#contact">Contact</a>
+        <a href="#intelligence">Intelligence</a>
+        <a href="#readiness">Roadmap</a>
       </div>
       <button class="btn btn-primary">Request Briefing</button>
     </nav>
@@ -589,44 +956,44 @@
     <div class="container">
       <div class="hero-content">
         <div class="hero-text">
-          <div class="eyebrow">Intelligence Suite</div>
-          <h1>Multimodal Evidence-Ready Intelligence Analysis</h1>
+          <div class="eyebrow">Multimodal Intelligence Suite</div>
+          <h1>Evidence-Ready Intelligence Analysis Platform</h1>
           <p class="hero-description">
-            Transform fragmented information into actionable, evidence-grade intelligence through AI-accelerated analysis, correlation, behavioral profiling, and operational decision support.
+            Transform fragmented information into actionable, defensible intelligence through AI-accelerated analysis, correlation, behavioral profiling, and operational decision support. Built for evidence-grade operations.
           </p>
           <div class="hero-actions">
             <button class="btn btn-primary">Explore Platform</button>
             <button class="btn btn-secondary">View Capabilities</button>
           </div>
-          <div style="margin-top: 20px;">
+          <div style="margin-top: 16px;">
             <div class="status-badge">
               <div class="status-dot"></div>
-              Stage 1 Beta - Active Testing
+              <span>Stage 1 Beta · Active Testing</span>
             </div>
           </div>
         </div>
 
         <div class="hero-visual">
-          <div class="stat-card">
-            <div class="stat-label">Current Status</div>
+          <div class="stat-card slide-up">
+            <div class="stat-label">📊 Current Status</div>
             <div class="stat-value">Stage 1</div>
-            <div class="stat-detail">Beta Testing Phase</div>
-            <div class="status-badge" style="margin-top: 12px; width: 100%; justify-content: center;">
+            <div class="stat-detail">Evidence-Ready Beta Testing</div>
+            <div class="status-badge" style="margin-top: 16px; width: 100%; justify-content: center;">
               <div class="status-dot"></div>
-              Evidence-Ready
+              <span>Active & Validated</span>
             </div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-label">Signal Coverage</div>
+          <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+            <div class="stat-label">📡 Signal Coverage</div>
             <div class="stat-value">5</div>
-            <div class="stat-detail">Analysis Modes - Text, Image, Audio, Video, Metadata</div>
+            <div class="stat-detail">Text · Image · Audio · Video · Metadata Analysis Modes</div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-label">Performance</div>
+          <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+            <div class="stat-label">⚡ Performance</div>
             <div class="stat-value">&lt;30s</div>
-            <div class="stat-detail">Alert Latency for Threat Detection</div>
+            <div class="stat-detail">Alert Latency for Critical Threat Detection</div>
           </div>
         </div>
       </div>
@@ -643,52 +1010,52 @@
 
       <div class="split-section">
         <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Built for Intelligence Professionals</h3>
+          <h3>Built for Intelligence Professionals</h3>
           <p>
-            Most organizations collect information. Few can transform information into understanding. CrownCode bridges that gap through a unified intelligence platform designed for:
+            Most organizations collect information. Few transform information into understanding. CrownCode bridges that gap through a unified intelligence platform designed for mission-critical environments.
           </p>
           <ul class="feature-list">
             <li class="feature-item">
               <div class="feature-check">✓</div>
-              <div class="feature-text"><strong>Intelligence Analysts</strong> - Correlate fragmented data into coherent intelligence</div>
+              <div class="feature-text"><strong>Intelligence Analysts</strong> — Correlate fragmented data into coherent, defensible intelligence</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">✓</div>
-              <div class="feature-text"><strong>Investigators</strong> - Accelerate workflows through evidence organization and relationship mapping</div>
+              <div class="feature-text"><strong>Investigators</strong> — Accelerate workflows through evidence organization and relationship mapping</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">✓</div>
-              <div class="feature-text"><strong>Researchers</strong> - Extract meaningful patterns from multimodal data</div>
+              <div class="feature-text"><strong>Researchers</strong> — Extract meaningful patterns from multimodal data sources</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">✓</div>
-              <div class="feature-text"><strong>Operations Leaders</strong> - Make informed decisions with defensible intelligence</div>
+              <div class="feature-text"><strong>Operations Leaders</strong> — Make informed decisions with chain-of-custody intelligence</div>
             </li>
           </ul>
         </div>
 
         <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Core Architecture</h3>
+          <h3>Intelligence Core Architecture</h3>
           <ul class="feature-list">
             <li class="feature-item">
               <div class="feature-check">■</div>
-              <div class="feature-text"><strong>Intelligence Fusion Engine</strong> - Correlate information across reports, communications, records, media, and systems</div>
+              <div class="feature-text"><strong>Fusion Engine</strong> — Correlate information across reports, communications, records, media, and operational systems</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">■</div>
-              <div class="feature-text"><strong>Multimodal Analysis</strong> - Extract intelligence from text, images, audio, video, and metadata simultaneously</div>
+              <div class="feature-text"><strong>Multimodal Analysis</strong> — Extract intelligence from five simultaneous signal channels</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">■</div>
-              <div class="feature-text"><strong>Behavioral Intelligence</strong> - Predictive modeling and psychological threat assessment</div>
+              <div class="feature-text"><strong>Behavioral Intelligence</strong> — Predictive modeling and psychological threat assessment</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">■</div>
-              <div class="feature-text"><strong>Evidence-Grade Reporting</strong> - Audit trails, chain-of-custody, and defensible intelligence artifacts</div>
+              <div class="feature-text"><strong>Evidence-Grade Reporting</strong> — Audit trails, chain-of-custody, and defensible artifacts</div>
             </li>
             <li class="feature-item">
               <div class="feature-check">■</div>
-              <div class="feature-text"><strong>Decision Support</strong> - Operational awareness and strategic forecasting</div>
+              <div class="feature-text"><strong>Decision Support</strong> — Operational awareness and strategic forecasting</div>
             </li>
           </ul>
         </div>
@@ -700,42 +1067,42 @@
   <section id="capabilities">
     <div class="container">
       <div class="section-header">
-        <h2>Core Competencies</h2>
-        <p>Intelligence capabilities built for evidence-ready operations and defensible analysis.</p>
+        <h2>Core Intelligence Capabilities</h2>
+        <p>Six integrated competencies designed for evidence-ready operations and defensible analysis.</p>
       </div>
 
       <div class="capabilities-grid">
-        <div class="capability-card">
+        <div class="capability-card slide-up">
           <div class="capability-icon">🧠</div>
           <h3>Intelligence Fusion</h3>
           <p>Correlate information across reports, communications, records, media, and operational systems to create a unified, coherent intelligence picture.</p>
         </div>
 
-        <div class="capability-card">
+        <div class="capability-card slide-up" style="animation-delay: 0.05s;">
           <div class="capability-icon">🔍</div>
           <h3>Investigative Intelligence</h3>
-          <p>Accelerate investigative workflows through timeline reconstruction, evidence organization, relationship mapping, and pattern recognition.</p>
+          <p>Accelerate workflows through timeline reconstruction, evidence organization, relationship mapping, and automated pattern recognition.</p>
         </div>
 
-        <div class="capability-card">
+        <div class="capability-card slide-up" style="animation-delay: 0.1s;">
           <div class="capability-icon">⚠️</div>
           <h3>Risk Intelligence</h3>
           <p>Identify emerging threats, vulnerabilities, escalation indicators, blind spots, and operational risks before they materialize.</p>
         </div>
 
-        <div class="capability-card">
+        <div class="capability-card slide-up" style="animation-delay: 0.15s;">
           <div class="capability-icon">📡</div>
           <h3>Operational Awareness</h3>
           <p>Provide decision makers with timely, organized, and actionable intelligence for informed strategic and tactical decisions.</p>
         </div>
 
-        <div class="capability-card">
+        <div class="capability-card slide-up" style="animation-delay: 0.2s;">
           <div class="capability-icon">📚</div>
           <h3>Knowledge Intelligence</h3>
-          <p>Transform institutional knowledge into searchable, persistent, and discoverable intelligence assets accessible across the organization.</p>
+          <p>Transform institutional knowledge into searchable, persistent, and discoverable intelligence assets across the organization.</p>
         </div>
 
-        <div class="capability-card">
+        <div class="capability-card slide-up" style="animation-delay: 0.25s;">
           <div class="capability-icon">🎯</div>
           <h3>Behavioral Intelligence</h3>
           <p>Psychological threat assessment, behavioral modeling, predictive profiling, and escalation forecasting for human-centered operations.</p>
@@ -749,44 +1116,44 @@
     <div class="container">
       <div class="section-header">
         <h2>Multimodal Signal Coverage</h2>
-        <p>Analyze evidence across five primary intelligence channels simultaneously.</p>
+        <p>Analyze evidence across five primary intelligence channels simultaneously for unified understanding.</p>
       </div>
 
       <div class="metrics-grid">
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">📄</div>
+        <div class="metric slide-up">
+          <div class="metric-icon">📄</div>
           <div class="metric-label">Text Analysis</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">NLP-powered extraction from documents, communications, records, and reports with semantic understanding.</p>
+          <p>NLP-powered extraction from documents, communications, records, and reports with semantic understanding and entity recognition.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🖼️</div>
+        <div class="metric slide-up" style="animation-delay: 0.05s;">
+          <div class="metric-icon">🖼️</div>
           <div class="metric-label">Image Intelligence</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Computer vision analysis for object detection, facial recognition, scene understanding, and visual correlation.</p>
+          <p>Computer vision for object detection, facial recognition, scene understanding, and visual correlation across datasets.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔊</div>
+        <div class="metric slide-up" style="animation-delay: 0.1s;">
+          <div class="metric-icon">🔊</div>
           <div class="metric-label">Audio Analysis</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Speech recognition, speaker identification, tone analysis, and acoustic pattern matching.</p>
+          <p>Speech recognition, speaker identification, tone analysis, and acoustic pattern matching for voice intelligence.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🎬</div>
+        <div class="metric slide-up" style="animation-delay: 0.15s;">
+          <div class="metric-icon">🎬</div>
           <div class="metric-label">Video Intelligence</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Temporal analysis, motion detection, behavioral tracking, and multi-subject correlation across frames.</p>
+          <p>Temporal analysis, motion detection, behavioral tracking, and multi-subject correlation across frames and sequences.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔐</div>
+        <div class="metric slide-up" style="animation-delay: 0.2s;">
+          <div class="metric-icon">🔐</div>
           <div class="metric-label">Metadata Analysis</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Temporal correlation, geolocation patterns, device signatures, and digital forensics integration.</p>
+          <p>Temporal correlation, geolocation patterns, device signatures, and digital forensics integration with chain-of-custody.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔗</div>
+        <div class="metric slide-up" style="animation-delay: 0.25s;">
+          <div class="metric-icon">🔗</div>
           <div class="metric-label">Correlation Engine</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted); margin-top: 8px;">Cross-modal fusion linking insights across all five channels for unified intelligence.</p>
+          <p>Cross-modal fusion linking insights across all five channels for unified, defensible intelligence artifacts.</p>
         </div>
       </div>
     </div>
@@ -797,12 +1164,12 @@
     <div class="container">
       <div class="section-header">
         <h2>Platform Readiness & Roadmap</h2>
-        <p>Current status, validation metrics, and next-phase milestones.</p>
+        <p>Current validation status, current capabilities, and next-phase advancement gates.</p>
       </div>
 
       <div class="split-section">
         <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Stage 1 Beta Status</h3>
+          <h3>Stage 1 Beta Capabilities</h3>
           <ul class="feature-list">
             <li class="feature-item">
               <div class="feature-check">✓</div>
@@ -832,21 +1199,21 @@
         </div>
 
         <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">Next Phase Gates</h3>
+          <h3>Advancement Gates</h3>
           <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div style="padding: 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-lg);">
-              <p style="font-size: 0.875rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 1</p>
-              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Complete controlled testing with validated evidence-ready reporting and defensible intelligence artifacts.</p>
+            <div class="readiness-box active">
+              <h4>Phase 1: Evidence Validation</h4>
+              <p>Complete controlled testing with validated evidence-ready reporting and defensible intelligence artifacts.</p>
             </div>
 
-            <div style="padding: 20px; background: #f3f4f6; border: 1px solid var(--border); border-radius: var(--radius-lg);">
-              <p style="font-size: 0.875rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 2</p>
-              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Expand multimodal capabilities and introduce advanced behavioral modeling for predictive operations.</p>
+            <div class="readiness-box">
+              <h4>Phase 2: Behavioral Expansion</h4>
+              <p>Expand multimodal capabilities and introduce advanced behavioral modeling for predictive operations.</p>
             </div>
 
-            <div style="padding: 20px; background: #f3f4f6; border: 1px solid var(--border); border-radius: var(--radius-lg);">
-              <p style="font-size: 0.875rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Phase 3</p>
-              <p style="font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">Integrate ecosystem interoperability with Crown Labs products for coordinated intelligence operations.</p>
+            <div class="readiness-box">
+              <h4>Phase 3: Ecosystem Integration</h4>
+              <p>Integrate interoperability with Crown Labs products for coordinated intelligence operations at scale.</p>
             </div>
           </div>
         </div>
@@ -858,41 +1225,43 @@
   <section>
     <div class="container">
       <div class="section-header">
-        <h2>Business Valuation & Growth Trajectory</h2>
+        <h2>Business Valuation & Growth</h2>
         <p>Asset valuation based on current capabilities and projected market expansion.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-        <div class="metric">
-          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Current Valuation</div>
-          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">$6M–$10M</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted);">Stage 1 Beta with evidence-ready capabilities</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div class="metric slide-up">
+          <div style="font-size: 1rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Current Valuation</div>
+          <div style="font-size: 2.75rem; font-weight: 900; color: var(--accent); margin-bottom: 8px;">$6M–$10M</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Stage 1 Beta with evidence-ready capabilities and controlled deployment.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Projected Valuation</div>
-          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">$22M–$38M</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted);">Post-Phase 1 completion with market validation</p>
+        <div class="metric slide-up" style="animation-delay: 0.1s;">
+          <div style="font-size: 1rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Projected Valuation</div>
+          <div style="font-size: 2.75rem; font-weight: 900; color: var(--accent); margin-bottom: 8px;">$22M–$38M</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Post-Phase 1 completion with market validation and expanded deployments.</p>
         </div>
 
-        <div class="metric">
-          <div style="font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Growth Trajectory</div>
-          <div style="font-size: 2.25rem; font-weight: 900; color: var(--primary); margin-bottom: 4px;">47%</div>
-          <p style="font-size: 0.9375rem; color: var(--text-muted);">Average projected annual growth rate</p>
+        <div class="metric slide-up" style="animation-delay: 0.2s;">
+          <div style="font-size: 1rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Growth Trajectory</div>
+          <div style="font-size: 2.75rem; font-weight: 900; color: var(--accent); margin-bottom: 8px;">47%</div>
+          <p style="font-size: 0.9375rem; color: var(--text-muted);">Average projected annual growth rate across market expansion phases.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA SECTION -->
-  <section class="cta-section">
-    <h2>Transform Information Into Intelligence</h2>
-    <p>Support investigations, operations, research, and strategic decision-making through a modern intelligence platform designed for evidence-ready operations at scale.</p>
-    <div class="cta-buttons">
-      <button class="btn btn-white">Request Executive Briefing</button>
-      <button class="btn btn-outline-white">Explore Documentation</button>
+  <div class="cta-section">
+    <div class="container" style="position: relative; z-index: 2;">
+      <h2>Transform Information Into Intelligence</h2>
+      <p>Support investigations, operations, research, and strategic decision-making through a modern intelligence platform designed for evidence-ready operations at scale.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-white">Request Executive Briefing</button>
+        <button class="btn btn-outline-white">Explore Documentation</button>
+      </div>
     </div>
-  </section>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -919,23 +1288,24 @@
           <a href="#">Documentation</a>
           <a href="#">API Reference</a>
           <a href="#">Developer Guide</a>
-          <a href="#">Privacy Policy</a>
+          <a href="#">Security</a>
         </div>
 
         <div class="footer-section">
-          <h4>Connect</h4>
-          <a href="#">GitHub</a>
-          <a href="#">Twitter</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">Email</a>
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Code of Conduct</a>
+          <a href="#">Compliance</a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 Crown Labs · Applied Intelligence Studio. All rights reserved.</p>
-        <div style="display: flex; gap: 24px;">
-          <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255, 255, 255, 0.9)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.6)'">Privacy</a>
-          <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255, 255, 255, 0.9)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.6)'">Terms</a>
+        <p>&copy; 2026 Crown Labs. Applied Intelligence Studio. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Status</a>
         </div>
       </div>
     </div>
@@ -948,31 +1318,39 @@
         const href = this.getAttribute('href');
         if (href !== '#' && document.querySelector(href)) {
           e.preventDefault();
-          document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+          const target = document.querySelector(href);
+          const offsetTop = target.offsetTop - 72;
+          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
       });
     });
 
-    // Add scroll animation to elements
+    // Intersection Observer for animations
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
+      rootMargin: '0px 0px -60px 0px'
     };
 
     const observer = new IntersectionObserver(function(entries) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+          entry.target.classList.add('fade-in');
+          entry.target.classList.add('slide-up');
         }
       });
     }, observerOptions);
 
-    document.querySelectorAll('section, .capability-card, .metric, .split-section').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+    document.querySelectorAll('section, .capability-card:not(.slide-up), .metric:not(.slide-up)').forEach(el => {
       observer.observe(el);
+    });
+
+    // Parallax effect on scroll
+    const parallaxElements = document.querySelectorAll('[data-parallax]');
+    window.addEventListener('scroll', () => {
+      parallaxElements.forEach(el => {
+        const scrollPosition = window.scrollY;
+        el.style.transform = `translateY(${scrollPosition * 0.5}px)`;
+      });
     });
   </script>
 </body>
