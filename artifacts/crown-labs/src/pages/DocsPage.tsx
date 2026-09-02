@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, Code2, FileText, Layers3, Search, ShieldCheck, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, Code2, FileText, Layers3, Search, ShieldCheck, TrendingUp } from "lucide-react";
+import type { ReactNode } from "react";
 import { products, getCategoryColor, getStatusColor } from "@/data/products";
 
 const principles = [
@@ -8,7 +9,7 @@ const principles = [
   { icon: Code2, title: "Build focused", body: "Every asset has a concrete readiness state and a next gate instead of an open ended roadmap." },
 ];
 
-function DocsShell({ children }: { children: React.ReactNode }) {
+function DocsShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
@@ -100,48 +101,31 @@ function ProductDoc({ id }: { id: string }) {
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold">Overview</h2>
-              <p className="mt-3 max-w-3xl text-sm text-muted-foreground leading-relaxed">
-                This canonical record defines {product.name} within the Crown Labs portfolio: its role, readiness, capabilities, operating metrics, valuation context, and next execution gate.
-              </p>
+              <p className="mt-3 max-w-3xl text-sm text-muted-foreground leading-relaxed">This canonical record defines {product.name} within the Crown Labs portfolio: its role, readiness, capabilities, operating metrics, valuation context, and next execution gate.</p>
             </section>
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold">Capabilities</h2>
               <div className="mt-5 grid gap-3">
-                {product.features.map((feature) => (
-                  <div key={feature} className="rounded-lg border border-border bg-card p-4 flex items-start gap-3">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                    <p className="text-sm leading-relaxed">{feature}</p>
-                  </div>
-                ))}
+                {product.features.map((feature) => <div key={feature} className="rounded-lg border border-border bg-card p-4 flex items-start gap-3"><CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" /><p className="text-sm leading-relaxed">{feature}</p></div>)}
               </div>
             </section>
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold">Operating metrics</h2>
               <div className="mt-5 grid sm:grid-cols-3 gap-3">
-                {product.metrics.map((metric) => (
-                  <div key={metric.label} className="rounded-lg border border-border bg-card p-5">
-                    <p className="text-2xl font-bold">{metric.value}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{metric.label}</p>
-                  </div>
-                ))}
+                {product.metrics.map((metric) => <div key={metric.label} className="rounded-lg border border-border bg-card p-5"><p className="text-2xl font-bold">{metric.value}</p><p className="mt-1 text-xs text-muted-foreground">{metric.label}</p></div>)}
               </div>
             </section>
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold">Readiness & next gate</h2>
-              <div className="mt-5 rounded-xl border border-primary/25 bg-primary/5 p-5">
-                <div className="flex items-center gap-2"><CircleDot className="h-4 w-4 text-primary" /><p className="text-sm font-semibold">{product.status}</p></div>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{product.nextGate}</p>
-              </div>
+              <div className="mt-5 rounded-xl border border-primary/25 bg-primary/5 p-5"><div className="flex items-center gap-2"><span className="inline-block h-3.5 w-3.5 rounded-full border-2 border-primary" /><p className="text-sm font-semibold">{product.status}</p></div><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{product.nextGate}</p></div>
             </section>
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold">Valuation context</h2>
-              <p className="mt-3 max-w-3xl text-sm text-muted-foreground leading-relaxed">
-                These portfolio ranges are directional positioning figures, not audited financial statements or guarantees. They are maintained alongside the portfolio readiness state.
-              </p>
+              <p className="mt-3 max-w-3xl text-sm text-muted-foreground leading-relaxed">These portfolio ranges are directional positioning figures, not audited financial statements or guarantees. They are maintained alongside the portfolio readiness state.</p>
               <div className="mt-5 grid sm:grid-cols-3 gap-3">
                 <div className="rounded-lg border border-border bg-card p-4"><p className="text-[10px] uppercase tracking-widest text-muted-foreground">As is</p><p className="mt-2 text-lg font-bold">{product.valuationAsIs}</p></div>
                 <div className="rounded-lg border border-border bg-card p-4"><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Projected</p><p className="mt-2 text-lg font-bold">{product.valuationProjected}</p></div>
@@ -161,10 +145,6 @@ function ProductDoc({ id }: { id: string }) {
   );
 }
 
-function CircleDot({ className }: { className?: string }) {
-  return <span className={`inline-block rounded-full border-2 border-current ${className ?? ""}`} />;
-}
-
 export default function DocsPage({ slug }: { slug?: string }) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("All");
@@ -174,7 +154,7 @@ export default function DocsPage({ slug }: { slug?: string }) {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return products.filter((product) => {
-      const matchesQuery = !q || [product.name, product.description, product.category, product.status].join(" ").toLowerCase().includes(q);
+      const matchesQuery = !q || [product.name, product.description, product.category, product.status, ...product.features].join(" ").toLowerCase().includes(q);
       return matchesQuery && (status === "All" || product.status === status) && (category === "All" || product.category === category);
     });
   }, [query, status, category]);
@@ -190,39 +170,24 @@ export default function DocsPage({ slug }: { slug?: string }) {
           <p className="mt-5 text-base text-muted-foreground leading-relaxed">Browse the same product inventory, readiness states, metrics, valuation context, and next gates that power the public portfolio.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mt-10">
-          {principles.map(({ icon: Icon, title, body }) => <div key={title} className="rounded-xl border border-border bg-card p-6"><Icon className="h-5 w-5 text-primary" /><h2 className="mt-4 text-sm font-semibold">{title}</h2><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p></div>)}
-        </div>
+        <div className="grid md:grid-cols-3 gap-4 mt-10">{principles.map(({ icon: Icon, title, body }) => <div key={title} className="rounded-xl border border-border bg-card p-6"><Icon className="h-5 w-5 text-primary" /><h2 className="mt-4 text-sm font-semibold">{title}</h2><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p></div>)}</div>
 
         <section className="mt-14">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-            <div><p className="text-xs uppercase tracking-widest text-muted-foreground">Product docs</p><h2 className="mt-2 text-2xl font-bold">Browse the portfolio documentation</h2></div>
-            <span className="text-xs text-muted-foreground">{filtered.length} of {products.length} records</span>
-          </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4"><div><p className="text-xs uppercase tracking-widest text-muted-foreground">Product docs</p><h2 className="mt-2 text-2xl font-bold">Browse the portfolio documentation</h2></div><span className="text-xs text-muted-foreground">{filtered.length} of {products.length} records</span></div>
 
           <div className="grid lg:grid-cols-[1fr_auto_auto] gap-3 mt-6">
-            <label className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 h-11">
-              <Search className="h-4 w-4 text-muted-foreground" />
-              <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search products, capabilities, status" className="w-full bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground" />
-            </label>
+            <label className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 h-11"><Search className="h-4 w-4 text-muted-foreground" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search products, capabilities, status" className="w-full bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground" /></label>
             <select value={status} onChange={(e) => setStatus(e.target.value)} className="h-11 rounded-lg border border-border bg-card px-3 text-sm text-foreground"><option>All</option><option>Stage 1 Beta</option><option>Beta</option><option>Prototype</option><option>Concept</option><option>Live</option></select>
             <select value={category} onChange={(e) => setCategory(e.target.value)} className="h-11 rounded-lg border border-border bg-card px-3 text-sm text-foreground"><option>All</option>{categories.map((item) => <option key={item}>{item}</option>)}</select>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-            {filtered.map((product) => (
-              <a key={product.id} href={`/docs/${product.id}`} className="group rounded-xl border border-border bg-card p-5 hover:border-primary/50 hover:bg-card/80 transition-all">
-                <div className="flex items-center justify-between gap-3">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                </div>
-                <div className="flex flex-wrap gap-1.5 mt-5"><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getStatusColor(product.status)}`}>{product.status}</span><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getCategoryColor(product.category)}`}>{product.category}</span></div>
-                <h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">{product.name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{product.description}</p>
-                <div className="mt-5 pt-4 border-t border-border grid grid-cols-2 gap-3"><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">As is</p><p className="mt-1 text-xs font-semibold">{product.valuationAsIs}</p></div><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Next gate</p><p className="mt-1 text-xs font-semibold line-clamp-2">{product.nextGate}</p></div></div>
-              </a>
-            ))}
-          </div>
+          <div className="flex items-center justify-between mt-4 mb-3"><p className="text-xs text-muted-foreground">{filtered.length} results</p><a href="/#portfolio" className="text-xs font-semibold text-foreground hover:text-primary transition-colors inline-flex items-center gap-1">View portfolio <ChevronRight className="h-3.5 w-3.5" /></a></div>
+
+          {filtered.length ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filtered.map((product) => <a key={product.id} href={`/docs/${product.id}`} className="group rounded-xl border border-border bg-card p-5 hover:border-primary/50 hover:bg-card/80 transition-all"><div className="flex items-center justify-between gap-3"><BookOpen className="h-5 w-5 text-primary" /><ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" /></div><div className="flex flex-wrap gap-1.5 mt-5"><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getStatusColor(product.status)}`}>{product.status}</span><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getCategoryColor(product.category)}`}>{product.category}</span></div><h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">{product.name}</h3><p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{product.description}</p><div className="mt-5 pt-4 border-t border-border grid grid-cols-2 gap-3"><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">As is</p><p className="mt-1 text-xs font-semibold">{product.valuationAsIs}</p></div><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Next gate</p><p className="mt-1 text-xs font-semibold line-clamp-2">{product.nextGate}</p></div></div></a>)}
+            </div>
+          ) : <div className="rounded-xl border border-dashed border-border p-10 text-center"><p className="text-sm font-semibold">No documentation matches your filters.</p><p className="mt-2 text-xs text-muted-foreground">Try a broader search or clear the status and category filters.</p><button onClick={() => { setQuery(""); setStatus("All"); setCategory("All"); }} className="mt-5 text-xs font-semibold text-primary hover:underline">Clear filters</button></div>}
         </section>
       </main>
     </DocsShell>
