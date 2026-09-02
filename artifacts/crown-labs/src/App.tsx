@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import FounderSection from "@/components/FounderSection";
 import ExecutiveOverview from "@/components/ExecutiveOverview";
 import PortfolioSection from "@/components/PortfolioSection";
+import DocumentationSection from "@/components/DocumentationSection";
 import FrameworksSection from "@/components/FrameworksSection";
 import StatusSection from "@/components/StatusSection";
 import ValuationSection from "@/components/ValuationSection";
@@ -23,6 +24,7 @@ export default function App() {
         <FadeInUp><FounderSection /></FadeInUp>
         <FadeInUp><ExecutiveOverview /></FadeInUp>
         <FadeInUp><PortfolioSection /></FadeInUp>
+        <FadeInUp><DocumentationSection /></FadeInUp>
         <FadeInUp><FrameworksSection /></FadeInUp>
         <FadeInUp><StatusSection /></FadeInUp>
         <FadeInUp><ValuationSection /></FadeInUp>
