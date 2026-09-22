@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, Code2, FileText, Layers3, Search, ShieldCheck, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, ChevronRight, Code2, FileText, Image as ImageIcon, Layers3, Search, ShieldCheck, TrendingUp } from "lucide-react";
 import type { ReactNode } from "react";
 import { products, getCategoryColor, getStatusColor } from "@/data/products";
+import { AppIcon } from "@/components/AppIcon";
+import { getAppIconAssetUrl } from "@/data/appIcons";
+import AppIconLibrary from "@/pages/AppIconLibrary";
 
 const principles = [
   { icon: ShieldCheck, title: "Evidence ready", body: "Outputs are structured for traceability, review, and accountable use rather than hype." },
@@ -64,6 +67,7 @@ function ProductDoc({ id }: { id: string }) {
           <aside className="hidden lg:block">
             <div className="sticky top-24">
               <a href="/docs" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-5"><ArrowLeft className="h-3.5 w-3.5" /> All documentation</a>
+              <a href="/docs/assets/app-icons" className="flex items-center gap-2 px-3 py-2 mb-5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-card/50 transition-colors"><ImageIcon className="h-3.5 w-3.5" /> App icon assets</a>
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-3">Products</p>
               <nav className="space-y-1">
                 {products.map((item) => (
@@ -81,9 +85,14 @@ function ProductDoc({ id }: { id: string }) {
               <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border ${getCategoryColor(product.category)}`}>{product.category}</span>
             </div>
 
-            <p className="text-xs uppercase tracking-widest text-primary">Product documentation</p>
-            <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">{product.name}</h1>
-            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">{product.description}</p>
+            <div className="flex items-start gap-5">
+              <AppIcon src={getAppIconAssetUrl(product.id)} alt={`${product.name} app icon`} className="h-20 w-20" loading="eager" />
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-widest text-primary">Product documentation</p>
+                <h1 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">{product.name}</h1>
+                <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">{product.description}</p>
+              </div>
+            </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-8">
               {[
@@ -159,6 +168,7 @@ export default function DocsPage({ slug }: { slug?: string }) {
     });
   }, [query, status, category]);
 
+  if (slug === "assets/app-icons") return <DocsShell><AppIconLibrary /></DocsShell>;
   if (slug) return <ProductDoc id={slug} />;
 
   return (
@@ -171,6 +181,14 @@ export default function DocsPage({ slug }: { slug?: string }) {
         </div>
 
         <div className="grid md:grid-cols-3 gap-4 mt-10">{principles.map(({ icon: Icon, title, body }) => <div key={title} className="rounded-xl border border-border bg-card p-6"><Icon className="h-5 w-5 text-primary" /><h2 className="mt-4 text-sm font-semibold">{title}</h2><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p></div>)}</div>
+
+        <a href="/docs/assets/app-icons" className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 hover:border-primary/50 transition-colors group">
+          <div className="flex items-center gap-4">
+            <div className="h-11 w-11 rounded-lg border border-border bg-background flex items-center justify-center"><ImageIcon className="h-5 w-5 text-primary" /></div>
+            <div><p className="text-sm font-semibold group-hover:text-primary transition-colors">App icon asset library</p><p className="mt-1 text-xs text-muted-foreground">Canonical product icons, descriptions, squircle presentation standard, and copyable direct resource paths.</p></div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+        </a>
 
         <section className="mt-14">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4"><div><p className="text-xs uppercase tracking-widest text-muted-foreground">Product docs</p><h2 className="mt-2 text-2xl font-bold">Browse the portfolio documentation</h2></div><span className="text-xs text-muted-foreground">{filtered.length} of {products.length} records</span></div>
@@ -185,7 +203,7 @@ export default function DocsPage({ slug }: { slug?: string }) {
 
           {filtered.length ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filtered.map((product) => <a key={product.id} href={`/docs/${product.id}`} className="group rounded-xl border border-border bg-card p-5 hover:border-primary/50 hover:bg-card/80 transition-all"><div className="flex items-center justify-between gap-3"><BookOpen className="h-5 w-5 text-primary" /><ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" /></div><div className="flex flex-wrap gap-1.5 mt-5"><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getStatusColor(product.status)}`}>{product.status}</span><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getCategoryColor(product.category)}`}>{product.category}</span></div><h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">{product.name}</h3><p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{product.description}</p><div className="mt-5 pt-4 border-t border-border grid grid-cols-2 gap-3"><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">As is</p><p className="mt-1 text-xs font-semibold">{product.valuationAsIs}</p></div><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Next gate</p><p className="mt-1 text-xs font-semibold line-clamp-2">{product.nextGate}</p></div></div></a>)}
+              {filtered.map((product) => <a key={product.id} href={`/docs/${product.id}`} className="group rounded-xl border border-border bg-card p-5 hover:border-primary/50 hover:bg-card/80 transition-all"><div className="flex items-center justify-between gap-3"><AppIcon src={getAppIconAssetUrl(product.id)} alt={`${product.name} app icon`} className="h-11 w-11" /><ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" /></div><div className="flex flex-wrap gap-1.5 mt-5"><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getStatusColor(product.status)}`}>{product.status}</span><span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getCategoryColor(product.category)}`}>{product.category}</span></div><h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">{product.name}</h3><p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{product.description}</p><div className="mt-5 pt-4 border-t border-border grid grid-cols-2 gap-3"><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">As is</p><p className="mt-1 text-xs font-semibold">{product.valuationAsIs}</p></div><div><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Next gate</p><p className="mt-1 text-xs font-semibold line-clamp-2">{product.nextGate}</p></div></div></a>)}
             </div>
           ) : <div className="rounded-xl border border-dashed border-border p-10 text-center"><p className="text-sm font-semibold">No documentation matches your filters.</p><p className="mt-2 text-xs text-muted-foreground">Try a broader search or clear the status and category filters.</p><button onClick={() => { setQuery(""); setStatus("All"); setCategory("All"); }} className="mt-5 text-xs font-semibold text-primary hover:underline">Clear filters</button></div>}
         </section>
