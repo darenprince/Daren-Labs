@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { type Product, getStatusColor, getCategoryColor } from "@/data/products";
 import { BookOpen, TrendingUp } from "lucide-react";
 import { RequestAccessModal } from "./RequestAccessModal";
+import { AppIcon } from "@/components/AppIcon";
+import { getAppIconAssetUrl } from "@/data/appIcons";
 
 export function QuickViewModal({ product, trigger }: { product: Product, trigger: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -13,13 +15,17 @@ export function QuickViewModal({ product, trigger }: { product: Product, trigger
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px] border-border bg-card p-0 overflow-hidden max-h-[90vh] flex flex-col">
         <div className="p-6 overflow-y-auto">
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-widest ${getStatusColor(product.status)}`}>{product.status}</span>
-            <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-widest ${getCategoryColor(product.category)}`}>{product.category}</span>
+          <div className="flex items-start gap-4 mb-6">
+            <AppIcon src={getAppIconAssetUrl(product.id)} alt={`${product.name} app icon`} className="h-16 w-16" loading="eager" />
+            <div className="min-w-0">
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-widest ${getStatusColor(product.status)}`}>{product.status}</span>
+                <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-widest ${getCategoryColor(product.category)}`}>{product.category}</span>
+              </div>
+              <DialogTitle className="text-2xl font-bold text-foreground mb-2">{product.name}</DialogTitle>
+              <p className="text-sm text-muted-foreground">{product.description}</p>
+            </div>
           </div>
-
-          <DialogTitle className="text-2xl font-bold text-foreground mb-2">{product.name}</DialogTitle>
-          <p className="text-sm text-muted-foreground mb-6">{product.description}</p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-6">
             <div className="rounded-lg border border-border bg-background/40 p-4">
