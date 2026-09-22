@@ -1,5 +1,7 @@
 import { BookOpen, ArrowRight, FileText, ShieldCheck, Layers3, ChevronRight } from "lucide-react";
 import { products } from "@/data/products";
+import { AppIcon } from "@/components/AppIcon";
+import { getAppIconAssetUrl } from "@/data/appIcons";
 
 const foundations = [
   { icon: Layers3, title: "Portfolio Architecture", description: "Canonical product inventory, category boundaries, readiness definitions, and next gates." },
@@ -38,9 +40,12 @@ export default function DocumentationSection() {
           <div className="divide-y divide-border">
             {products.map((product) => (
               <a key={product.id} href={`/docs/${product.id}`} className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] px-5 py-4 hover:bg-background/40 transition-colors group">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{product.name}</h3><span className="text-[10px] uppercase tracking-widest text-muted-foreground">{product.category}</span></div>
-                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{product.description}</p>
+                <div className="flex items-start gap-3 min-w-0">
+                  <AppIcon src={getAppIconAssetUrl(product.id)} alt={`${product.name} app icon`} className="h-10 w-10" />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{product.name}</h3><span className="text-[10px] uppercase tracking-widest text-muted-foreground">{product.category}</span></div>
+                    <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{product.description}</p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3 text-left md:text-right"><div><p className="text-xs font-semibold text-foreground">{product.status}</p><p className="mt-1 text-[11px] text-muted-foreground">Read documentation</p></div><ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" /></div>
               </a>

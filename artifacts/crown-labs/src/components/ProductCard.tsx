@@ -4,6 +4,8 @@ import { type Product, getStatusColor, getCategoryColor } from "@/data/products"
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { QuickViewModal } from "./modals/QuickViewModal";
 import { RequestAccessModal } from "./modals/RequestAccessModal";
+import { AppIcon } from "@/components/AppIcon";
+import { getAppIconAssetUrl } from "@/data/appIcons";
 
 interface ProductCardProps {
   product: Product;
@@ -27,9 +29,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center">
-            <span className="text-xs font-bold text-muted-foreground">{product.abbr}</span>
-          </div>
+          <AppIcon
+            src={getAppIconAssetUrl(product.id)}
+            alt={`${product.name} app icon`}
+            className="h-12 w-12"
+          />
           <div>
             <div className="flex flex-wrap gap-1.5 mb-2">
               <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${getStatusColor(product.status)}`}>{product.status}</span>
