@@ -25,7 +25,7 @@ export default function AppIconLibrary() {
           Canonical product icon assets for Crown Labs surfaces. The source PNGs remain unchanged. Crown Labs interfaces apply the shared squircle crop at render time so every surface uses the same geometry without creating duplicate image files.
         </p>
         <div className="mt-6 rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground leading-relaxed">
-          Presentation standard: SVG object-bounding-box clip path using the Crown Labs squircle mask. VoxVector is intentionally excluded from this library and treatment.
+          Presentation standard: SVG object-bounding-box clip path using the Crown Labs squircle mask.
         </div>
       </div>
 
